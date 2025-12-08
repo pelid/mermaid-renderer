@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Поток создания ценности</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    #viewport { cursor: default; }
+    .mermaid { padding: 20px; }
+  </style>
+</head>
+<body class="bg-gray-50">
+
+  <!-- Основной контент -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <div class="bg-white rounded-xl shadow-lg mb-6">
+      <div class="p-6">
+        <div class="flex flex-col md:flex-row md:items-center justify-between">
+          <div>
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Поток создания ценности</h2>
+            <p class="text-gray-600">Инициатор: Клиент</p>
+            <p class="text-gray-600">Инициирующее делегирование: Забронировать объект у частного собственника</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Область просмотра диаграммы -->
+    <!-- Кнопки управления и подсказки будут добавлены JS библиотекой -->
+    <div id="viewport" class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200 relative">
+      <div id="graph" class="w-full h-[600px]">
+         <pre class="mermaid">
+graph TD
+    A[Заявка] --> B{Анализ}
+    B --> C[Планирование]
+    B --> D[Оценка]
+    C --> E[Подготовка]
+    D --> E
+    E --> F{Контроль}
+    F --> G[Производство]
+    F --> H[Доработка]
+    H --> E
+    G --> I[Тестирование]
+    I --> J{Проверка}
+    J --> K[Доставка]
+    J --> L[Исправление]
+    L --> I
+    K --> M[Завершение]
+        </pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- Футер -->
+  <footer class="bg-white border-t border-gray-200 mt-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    </div>
+  </footer>
+
+  <script type="module">
+    // load diagram-viewer.js file from CDN and GitHub repository mirror to avoid CORS issue on GitLab
+    import { DiagramViewer } from 'https://cdn.jsdelivr.net/gh/pelid/mermaid-renderer@main/diagram-viewer.js';
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+
+    // Инициализация Mermaid
+    mermaid.initialize({
+      startOnLoad: false,
+      theme: 'forest',
+    });
+
+    const container = document.getElementById('viewport');
+
+    // Ждем завершения рендеринга Mermaid, чтобы svg.getBBox() не оказался пустым
+    // при инициализации `DiagramViewer`
+    await mermaid.run({
+      nodes: [document.querySelector('.mermaid')],
+    })
+    new DiagramViewer(container);
+  </script>
+</body>
+</html>
